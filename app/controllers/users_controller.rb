@@ -6,7 +6,7 @@ class UsersController < ApplicationController
   end
 
   def home
-    @user_list = User.all.order( :created_at => :desc)
+    @user_list = User.all.order( :created_at => :asc)
     render({ :template => "users_templates/all_users"})
   end
   
@@ -15,7 +15,7 @@ class UsersController < ApplicationController
     matching_users = User.where({ :username => username })
     @user = matching_users.at(0)
 
-    render({ :template => "user_templates/user_details"})
+    render({ :template => "users_templates/user_details"})
   end
   
   def create
@@ -33,7 +33,8 @@ class UsersController < ApplicationController
     
     the_user.username = params.fetch("query_username")
     the_user.save
-    redirect_to("/users/#{user.username}")
+    username = the_user.username
+    redirect_to("/users/#{username}")
   end
 
 end
