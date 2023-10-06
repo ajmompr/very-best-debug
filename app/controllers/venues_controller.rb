@@ -8,9 +8,9 @@ class VenuesController < ApplicationController
   end
 
   def show
-    venue_id = params.fetch("venue_id")
+    venue_id = params.fetch("the_id")
     matching_venues = Venue.where({ :id => venue_id })
-    the_venue = matching_venues
+    @the_venue = matching_venues.first
 
     render({ :template => "venue_templates/details" })
   end
@@ -26,15 +26,19 @@ class VenuesController < ApplicationController
   end
   
   def update
-    the_id = params.fetch("venue_id")
+    the_id = params.fetch("the_id")
 
     @venue = Venue.where({ :id => the_id })
-    venue.address = params.fetch("query_address")
-    venue.name = params.fetch("Query_name")
-    venue.neighborhood = params.fetch("query_neighborhood")
-    venue.save
+
+    @the_venue = @venue.first
+
+    @the_venue.address = params.fetch("query_address")
+    @the_venue.name = params.fetch("query_name")
+    @the_venue.neighborhood = params.fetch("query_neighborhood")
+
+    @the_venue.save
     
-    redirect_to("/venues/#{venue.id}")
+    redirect_to("/venues/#{@the_venue.id}")
   end
 
   def destroy
